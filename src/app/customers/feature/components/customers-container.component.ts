@@ -2,6 +2,7 @@ import { Component, computed, inject, Signal } from '@angular/core';
 import { CustomersComponent, CustomersViewModel } from '@app/customers/ui';
 import { CustomersStore } from '@app/customers/data/customers-store';
 import { MatButtonModule } from '@angular/material/button';
+import { BookingsStore } from '@app/bookings.store';
 
 @Component({
   selector: 'app-customers-container',
@@ -17,12 +18,16 @@ import { MatButtonModule } from '@angular/material/button';
       (setUnselected)="setUnselected()"
       (previousPage)="previousPage()"
       (nextPage)="nextPage()"
-    ></app-customers>`,
+    ></app-customers>
+    @if (currentBookings(); as value) {
+    <p>Current Bookings: {{ value }}</p>
+    } `,
   standalone: true,
   imports: [CustomersComponent, MatButtonModule],
 })
 export class CustomersContainerComponent {
   #store = inject(CustomersStore);
+  currentBookings = inject(BookingsStore).currentBookings; // inter-store communication
   isLoading = this.#store.isLoading;
   viewModel: Signal<CustomersViewModel> = computed(() => {
     const pagedCustomers = this.#store.pagedCustomers();
