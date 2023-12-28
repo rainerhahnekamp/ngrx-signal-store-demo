@@ -1,0 +1,61 @@
+<h2>Customers</h2>
+<p class="my-2">
+  <a [routerLink]="['.', 'new']" color="primary" mat-raised-button
+    >Add Customer</a
+  >
+</p>
+
+@if (viewModel) { @if (dataSource.data.length > 0) {
+<div class="my-4 max-w-screen-sm">
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element | customer }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="country">
+      <mat-header-cell *matHeaderCellDef> Country</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.country }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="birthdate">
+      <mat-header-cell *matHeaderCellDef> Birthday</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{
+        element.birthdate | date
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-slide-toggle
+          class="ml-4"
+          (change)="toggleSelection($event, element.id)"
+          [checked]="element.selected"
+          color="primary"
+        ></mat-slide-toggle>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      data-testid="row-customer"
+    ></mat-row>
+  </mat-table>
+
+  <div class="flex justify-evenly items-baseline mt-4">
+    <button mat-raised-button (click)="previousPage.emit()">
+      <mat-icon>west</mat-icon>
+    </button>
+    <p>Page {{ (viewModel.pageIndex || 0) + 1 }}</p>
+    <button mat-raised-button (click)="nextPage.emit()">
+      <mat-icon>east</mat-icon>
+    </button>
+  </div>
+</div>
+} @else {
+
+<p>We don't have any customers yet 😥</p>
+
+} }
