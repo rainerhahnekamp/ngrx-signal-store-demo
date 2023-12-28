@@ -1,7 +1,5 @@
 # NgRx Signal Store Demo
 
-Demo used at the Angular Advanced Day on 30. November 2023.
-
 The accompanying video is available at
 
 <div>
